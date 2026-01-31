@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://main_scene"]
+
+[ext_resource type="PackedScene" uid="uid://player_scene" path="res://scenes/Player.tscn" id="1_player"]
+
+[sub_resource type="Environment" id="Environment_1x8yv"]
+background_mode = 1
+background_color = Color(0.2, 0.3, 0.4, 1)
+ambient_light_color = Color(0.2, 0.2, 0.2, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_1x8yv"]
+size = Vector2(100, 100)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_1x8yv"]
+plane = Plane(0, 1, 0, 0)
+
+[node name="Main" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1x8yv")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, -0.75, 0.433013, 0, 10, 0)
+light_energy = 1.0
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+
+[node name="Ground" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("WorldBoundaryShape3D_1x8yv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0)
+mesh = SubResource("PlaneMesh_1x8yv")

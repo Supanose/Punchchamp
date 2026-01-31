@@ -1,0 +1,38 @@
+# Godot 4.x specific ignores
+.godot/
+import/
+export/
+temp/
+
+# Godot editor settings
+editor_settings.*
+
+# Godot build artifacts
+*.log
+*.tmp
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Backup files
+*~
+*.bak
+*.backup
+
+# Compressed files
+*.zip
+*.rar
+*.7z
+
+# Exported builds
+builds/
+*.exe
+*.app
+*.apk
