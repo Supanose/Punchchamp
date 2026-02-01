@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://main_scene"]
+[gd_scene load_steps=8 format=3 uid="uid://main_scene"]
 
 [ext_resource type="PackedScene" uid="uid://player_scene" path="res://scenes/Player.tscn" id="1_player"]
+[ext_resource type="Script" path="res://scripts/GameMode.gd" id="2_gamemode"]
 
 [sub_resource type="Environment" id="Environment_1x8yv"]
 background_mode = 1
@@ -13,7 +14,16 @@ size = Vector2(100, 100)
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_1x8yv"]
 plane = Plane(0, 1, 0, 0)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_1x8yv"]
+size = Vector3(20, 5, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_1x8yv"]
+size = Vector3(20, 5, 1)
+
 [node name="Main" type="Node3D"]
+
+[node name="GameMode" type="Node" parent="."]
+script = ExtResource("2_gamemode")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_1x8yv")
@@ -33,3 +43,32 @@ shape = SubResource("WorldBoundaryShape3D_1x8yv")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
 transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0)
 mesh = SubResource("PlaneMesh_1x8yv")
+
+[node name="Barrier" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 10)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Barrier"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Barrier/StaticBody3D"]
+shape = SubResource("BoxShape3D_1x8yv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Barrier"]
+mesh = SubResource("BoxMesh_1x8yv")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="StateLabel" type="Label" parent="UI"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 200.0
+offset_bottom = 60.0
+text = "PREP"
+vertical_alignment = 1
+
+[node name="TimerLabel" type="Label" parent="UI"]
+offset_left = 20.0
+offset_top = 70.0
+offset_right = 200.0
+offset_bottom = 110.0
+text = "PREP: 60"
+vertical_alignment = 1
