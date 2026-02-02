@@ -41,6 +41,7 @@ func _ready():
 func _update_visual():
 	# Simple color coding for different part types
 	var material = StandardMaterial3D.new()
+	material.flags_unshaded = true  # Make sure color is visible
 	
 	match part_type:
 		PartType.CORE:
@@ -63,11 +64,13 @@ func _update_visual():
 					material.albedo_color = Color.ORANGE
 	
 	mesh.material_override = material
+	mesh.set_surface_override_material(0, material)
 
 func _on_body_entered(body: Node):
 	if body.name == "Player" and can_pickup():
 		var player = body as Player
 		if player.try_pickup_part(self):
+			print("Picked up: ", get_part_name())
 			queue_free()
 
 func can_pickup() -> bool:

@@ -50,8 +50,10 @@ func _process(delta):
 func _update_ui():
 	var player = get_node("../Player")
 	if player:
-		parts_label.text = "Parts: %s" % player.get_parts_display()
-		weapon_label.text = "Weapon: %s" % player.get_weapon_display()
+		var parts_display = player.get_parts_display()
+		var weapon_display = player.get_weapon_display()
+		parts_label.text = "Parts: %s" % parts_display
+		weapon_label.text = "Weapon: %s" % weapon_display
 
 func enter_prep_state():
 	current_state = RoundState.PREP

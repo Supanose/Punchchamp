@@ -1,11 +1,12 @@
 extends CharacterBody3D
+class_name Player
 
-@export var move_speed: float = 8.0
-@export var sprint_multiplier: float = 1.8
-@export var acceleration: float = 20.0
-@export var deceleration: float = 25.0
+@export var move_speed: float = 12.0
+@export var sprint_multiplier: float = 2.0
+@export var acceleration: float = 25.0
+@export var deceleration: float = 30.0
 @export var jump_velocity: float = 4.5
-@export var jump_burst_impulse: float = 8.0
+@export var jump_burst_impulse: float = 12.0
 @export var jump_burst_cooldown: float = 1.0
 @export var jump_burst_window: float = 0.25
 
@@ -27,9 +28,9 @@ var has_jumped: bool = false
 var camera_rotation: Vector2 = Vector2.ZERO
 
 # Parts system
-var core_part: PartPickup = null
-var handle_part: PartPickup = null
-var mod_part: PartPickup = null
+var core_part_data: Dictionary = {}
+var handle_part_data: Dictionary = {}
+var mod_part_data: Dictionary = {}
 var current_weapon: WeaponData = null
 var weapon_mesh: MeshInstance3D = null
 
@@ -61,11 +62,17 @@ func _unhandled_input(event):
 		_try_interact()
 
 func _try_interact():
+	print("Interact key pressed")
 	# Try to craft at nearby workbench
 	var workbenches = get_tree().get_nodes_in_group("workbench")
+	print("Found workbenches: ", workbenches.size())
+	
 	for workbench in workbenches:
+		print("Checking workbench: ", workbench.name, " nearby_player: ", workbench.nearby_player)
 		if workbench.nearby_player == self:
-			workbench.try_craft()
+			print("Trying to craft at workbench")
+			var success = workbench.try_craft()
+			print("Craft result: ", success)
 			break
 
 func _physics_process(delta):
@@ -136,51 +143,72 @@ func _physics_process(delta):
 func try_pickup_part(part: PartPickup) -> bool:
 	match part.part_type:
 		PartPickup.PartType.CORE:
-			if core_part == null:
-				core_part = part
+			if core_part_data.is_empty():
+				core_part_data = {
+					"name": part.get_part_name(),
+					"type": part.core_type,
+					"damage_mult": part.damage_mult,
+					"speed_mult": part.speed_mult,
+					"reach_add": part.reach_add,
+					"knockback_mult": part.knockback_mult
+				}
 				return true
 		PartPickup.PartType.HANDLE:
-			if handle_part == null:
-				handle_part = part
+			if handle_part_data.is_empty():
+				handle_part_data = {
+					"name": part.get_part_name(),
+					"type": part.handle_type,
+					"damage_mult": part.damage_mult,
+					"speed_mult": part.speed_mult,
+					"reach_add": part.reach_add,
+					"knockback_mult": part.knockback_mult
+				}
 				return true
 		PartPickup.PartType.MOD:
-			if mod_part == null:
-				mod_part = part
+			if mod_part_data.is_empty():
+				mod_part_data = {
+					"name": part.get_part_name(),
+					"type": part.mod_type,
+					"damage_mult": part.damage_mult,
+					"speed_mult": part.speed_mult,
+					"reach_add": part.reach_add,
+					"knockback_mult": part.knockback_mult
+				}
 				return true
 	return false
 
 func can_craft_weapon() -> bool:
-	return core_part != null and handle_part != null
+	return not core_part_data.is_empty() and not handle_part_data.is_empty()
 
 func craft_weapon():
 	if not can_craft_weapon():
 		return
 	
 	# Create weapon data
-	var weapon_name = "%s+%s" % [core_part.get_part_name(), handle_part.get_part_name()]
-	if mod_part:
-		weapon_name += "+%s" % mod_part.get_part_name()
+	var weapon_name = "%s+%s" % [core_part_data["name"], handle_part_data["name"]]
+	if not mod_part_data.is_empty():
+		weapon_name += "+%s" % mod_part_data["name"]
 	
-	var damage = core_part.damage_mult * handle_part.damage_mult
-	var speed = core_part.speed_mult * handle_part.speed_mult
-	var reach = core_part.reach_add + handle_part.reach_add
-	var knockback = core_part.knockback_mult * handle_part.knockback_mult
+	var damage = core_part_data["damage_mult"] * handle_part_data["damage_mult"]
+	var speed = core_part_data["speed_mult"] * handle_part_data["speed_mult"]
+	var reach = core_part_data["reach_add"] + handle_part_data["reach_add"]
+	var knockback = core_part_data["knockback_mult"] * handle_part_data["knockback_mult"]
 	
-	if mod_part:
-		damage *= mod_part.damage_mult
-		speed *= mod_part.speed_mult
-		reach += mod_part.reach_add
-		knockback *= mod_part.knockback_mult
+	if not mod_part_data.is_empty():
+		damage *= mod_part_data["damage_mult"]
+		speed *= mod_part_data["speed_mult"]
+		reach += mod_part_data["reach_add"]
+		knockback *= mod_part_data["knockback_mult"]
 	
-	current_weapon = WeaponData.new(weapon_name, damage, speed, reach, knockback, core_part.core_type)
+	current_weapon = WeaponData.new(weapon_name, damage, speed, reach, knockback, core_part_data["type"])
 	
 	# Create weapon mesh
 	_equip_weapon_visual()
 	
 	# Clear parts
-	core_part = null
-	handle_part = null
-	mod_part = null
+	core_part_data.clear()
+	handle_part_data.clear()
+	mod_part_data.clear()
 	
 	print("Crafted weapon: %s" % weapon_name)
 
@@ -218,9 +246,9 @@ func create_hammer_mesh() -> Mesh:
 	return mesh
 
 func reset_loadout():
-	core_part = null
-	handle_part = null
-	mod_part = null
+	core_part_data.clear()
+	handle_part_data.clear()
+	mod_part_data.clear()
 	current_weapon = null
 	if weapon_mesh:
 		weapon_mesh.queue_free()
@@ -228,9 +256,13 @@ func reset_loadout():
 
 func get_parts_display() -> String:
 	var parts = []
-	if core_part: parts.append(core_part.get_part_name())
-	if handle_part: parts.append(handle_part.get_part_name())
-	if mod_part: parts.append(mod_part.get_part_name())
+	if not core_part_data.is_empty(): 
+		parts.append(core_part_data["name"])
+	if not handle_part_data.is_empty(): 
+		parts.append(handle_part_data["name"])
+	if not mod_part_data.is_empty(): 
+		parts.append(mod_part_data["name"])
+	
 	return " | ".join(parts) if parts.size() > 0 else "None"
 
 func get_weapon_display() -> String:

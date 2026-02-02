@@ -61,57 +61,36 @@ mesh = SubResource("BoxMesh_1x8yv")
 
 [node name="BladeCore1" parent="Pickups" instance=ExtResource("3_part_pickup")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -5)
-script = null
-
-[node name="BladeCore1" type="PartPickup" parent="Pickups/BladeCore1"]
 part_type = 0
 core_type = 0
 
 [node name="HammerCore1" parent="Pickups" instance=ExtResource("3_part_pickup")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, -5)
-script = null
-
-[node name="HammerCore1" type="PartPickup" parent="Pickups/HammerCore1"]
 part_type = 0
 core_type = 1
 
 [node name="ShortHandle1" parent="Pickups" instance=ExtResource("3_part_pickup")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 1, -5)
-script = null
-
-[node name="ShortHandle1" type="PartPickup" parent="Pickups/ShortHandle1"]
 part_type = 1
 handle_type = 0
 
 [node name="LongHandle1" parent="Pickups" instance=ExtResource("3_part_pickup")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 1, -5)
-script = null
-
-[node name="LongHandle1" type="PartPickup" parent="Pickups/LongHandle1"]
 part_type = 1
 handle_type = 1
 
 [node name="WeightMod1" parent="Pickups" instance=ExtResource("3_part_pickup")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -7)
-script = null
-
-[node name="WeightMod1" type="PartPickup" parent="Pickups/WeightMod1"]
 part_type = 2
 mod_type = 0
 
 [node name="SpikesMod1" parent="Pickups" instance=ExtResource("3_part_pickup")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, -7)
-script = null
-
-[node name="SpikesMod1" type="PartPickup" parent="Pickups/SpikesMod1"]
 part_type = 2
 mod_type = 1
 
 [node name="Workbench1" parent="." instance=ExtResource("4_workbench")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -8)
-script = null
-
-[node name="Workbench1" type="Workbench" parent="Workbench1"]
 add_to_group = "workbench"
 
 [node name="UI" type="CanvasLayer" parent="."]
