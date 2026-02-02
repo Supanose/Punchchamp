@@ -62,17 +62,11 @@ func _unhandled_input(event):
 		_try_interact()
 
 func _try_interact():
-	print("Interact key pressed")
 	# Try to craft at nearby workbench
 	var workbenches = get_tree().get_nodes_in_group("workbench")
-	print("Found workbenches: ", workbenches.size())
-	
 	for workbench in workbenches:
-		print("Checking workbench: ", workbench.name, " nearby_player: ", workbench.nearby_player)
 		if workbench.nearby_player == self:
-			print("Trying to craft at workbench")
-			var success = workbench.try_craft()
-			print("Craft result: ", success)
+			workbench.try_craft()
 			break
 
 func _physics_process(delta):
@@ -209,8 +203,6 @@ func craft_weapon():
 	core_part_data.clear()
 	handle_part_data.clear()
 	mod_part_data.clear()
-	
-	print("Crafted weapon: %s" % weapon_name)
 
 func _equip_weapon_visual():
 	# Remove existing weapon

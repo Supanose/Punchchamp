@@ -70,7 +70,6 @@ func _on_body_entered(body: Node):
 	if body.name == "Player" and can_pickup():
 		var player = body as Player
 		if player.try_pickup_part(self):
-			print("Picked up: ", get_part_name())
 			queue_free()
 
 func can_pickup() -> bool:
