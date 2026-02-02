@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://workbench"]
+
+[ext_resource type="Script" path="res://scripts/Workbench.gd" id="1_workbench"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_1x8yv"]
+size = Vector3(2, 1, 2)
+
+[node name="Workbench" type="Area3D"]
+script = ExtResource("1_workbench")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxMesh_1x8yv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_1x8yv")

@@ -1,7 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://main_scene"]
+[gd_scene load_steps=12 format=3 uid="uid://main_scene"]
 
 [ext_resource type="PackedScene" uid="uid://player_scene" path="res://scenes/Player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/GameMode.gd" id="2_gamemode"]
+[ext_resource type="PackedScene" uid="uid://part_pickup" path="res://scenes/pickups/PartPickup.tscn" id="3_part_pickup"]
+[ext_resource type="PackedScene" uid="uid://workbench" path="res://scenes/Workbench.tscn" id="4_workbench"]
 
 [sub_resource type="Environment" id="Environment_1x8yv"]
 background_mode = 1
@@ -55,6 +57,63 @@ shape = SubResource("BoxShape3D_1x8yv")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Barrier"]
 mesh = SubResource("BoxMesh_1x8yv")
 
+[node name="Pickups" type="Node3D" parent="."]
+
+[node name="BladeCore1" parent="Pickups" instance=ExtResource("3_part_pickup")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -5)
+script = null
+
+[node name="BladeCore1" type="PartPickup" parent="Pickups/BladeCore1"]
+part_type = 0
+core_type = 0
+
+[node name="HammerCore1" parent="Pickups" instance=ExtResource("3_part_pickup")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, -5)
+script = null
+
+[node name="HammerCore1" type="PartPickup" parent="Pickups/HammerCore1"]
+part_type = 0
+core_type = 1
+
+[node name="ShortHandle1" parent="Pickups" instance=ExtResource("3_part_pickup")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 1, -5)
+script = null
+
+[node name="ShortHandle1" type="PartPickup" parent="Pickups/ShortHandle1"]
+part_type = 1
+handle_type = 0
+
+[node name="LongHandle1" parent="Pickups" instance=ExtResource("3_part_pickup")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 1, -5)
+script = null
+
+[node name="LongHandle1" type="PartPickup" parent="Pickups/LongHandle1"]
+part_type = 1
+handle_type = 1
+
+[node name="WeightMod1" parent="Pickups" instance=ExtResource("3_part_pickup")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -7)
+script = null
+
+[node name="WeightMod1" type="PartPickup" parent="Pickups/WeightMod1"]
+part_type = 2
+mod_type = 0
+
+[node name="SpikesMod1" parent="Pickups" instance=ExtResource("3_part_pickup")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, -7)
+script = null
+
+[node name="SpikesMod1" type="PartPickup" parent="Pickups/SpikesMod1"]
+part_type = 2
+mod_type = 1
+
+[node name="Workbench1" parent="." instance=ExtResource("4_workbench")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -8)
+script = null
+
+[node name="Workbench1" type="Workbench" parent="Workbench1"]
+add_to_group = "workbench"
+
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="StateLabel" type="Label" parent="UI"]
@@ -71,4 +130,20 @@ offset_top = 70.0
 offset_right = 200.0
 offset_bottom = 110.0
 text = "PREP: 60"
+vertical_alignment = 1
+
+[node name="PartsLabel" type="Label" parent="UI"]
+offset_left = 20.0
+offset_top = 120.0
+offset_right = 300.0
+offset_bottom = 160.0
+text = "Parts: None"
+vertical_alignment = 1
+
+[node name="WeaponLabel" type="Label" parent="UI"]
+offset_left = 20.0
+offset_top = 170.0
+offset_right = 300.0
+offset_bottom = 210.0
+text = "Weapon: None"
 vertical_alignment = 1

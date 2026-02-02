@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://part_pickup"]
+
+[ext_resource type="Script" path="res://scripts/PartPickup.gd" id="1_part_pickup"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_1x8yv"]
+radius = 0.3
+
+[node name="PartPickup" type="Area3D"]
+script = ExtResource("1_part_pickup")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereMesh_1x8yv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_1x8yv")
