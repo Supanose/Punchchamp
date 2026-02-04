@@ -1,0 +1,94 @@
+[gd_scene load_steps=9 format=3 uid="uid://ai_opponent_scene"]
+
+[ext_resource type="Script" path="res://scripts/AIOpponent.gd" id="1_ai_opponent"]
+[ext_resource type="Script" path="res://scripts/Combatant.gd" id="2_combatant"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ai"]
+height = 2.0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ai"]
+height = 2.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ai_hitbox"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ai_hurtbox"]
+height = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_health_bg"]
+bg_color = Color(0.2, 0.2, 0.2, 0.8)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_health_fill"]
+bg_color = Color(0.8, 0.2, 0.2, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ai"]
+albedo_color = Color(0.8, 0.2, 0.2, 1)
+
+[node name="AIOpponent" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 2, 10)
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("1_ai_opponent")
+groups = ["ai_opponent"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_ai")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_ai")
+material_override = SubResource("StandardMaterial3D_ai")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.5, -0.866025, 0, 0.866025, 0.5, 0, 5, 8)
+
+[node name="WeaponAnchor" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1.5, 0.8)
+
+[node name="HitboxOrigin" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0)
+
+[node name="MeleeHitbox" type="Area3D" parent="HitboxOrigin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+collision_layer = 16
+collision_mask = 2
+
+[node name="Hurtbox" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox"]
+shape = SubResource("CapsuleShape3D_ai_hurtbox")
+
+[node name="Combatant" type="Node" parent="."]
+script = ExtResource("2_combatant")
+
+[node name="HealthBarUI" type="SubViewportContainer" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+size = Vector2(200, 30)
+transparent_bg = true
+mouse_filter = 2
+
+[node name="SubViewport" type="SubViewport" parent="HealthBarUI"]
+size = Vector2(200, 30)
+render_target_update_mode = 3
+
+[node name="HealthBar" type="ProgressBar" parent="HealthBarUI/SubViewport"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = -5.0
+max_value = 100.0
+value = 100.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_health_fill")
+theme_override_styles/background = SubResource("StyleBoxFlat_health_bg")

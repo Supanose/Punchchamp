@@ -37,6 +37,47 @@ enum ModType {
 func _ready():
 	body_entered.connect(_on_body_entered)
 	_update_visual()
+	_setup_part_stats()
+
+func _setup_part_stats():
+	# Set part-specific stats
+	match part_type:
+		PartType.CORE:
+			match core_type:
+				CoreType.BLADE:
+					damage_mult = 0.8
+					speed_mult = 1.2
+					reach_add = 1.5
+					knockback_mult = 0.8
+				CoreType.HAMMER:
+					damage_mult = 1.5
+					speed_mult = 0.7
+					reach_add = 1.0
+					knockback_mult = 1.3
+		PartType.HANDLE:
+			match handle_type:
+				HandleType.SHORT:
+					damage_mult = 1.1
+					speed_mult = 1.1
+					reach_add = 0.5
+					knockback_mult = 0.9
+				HandleType.LONG:
+					damage_mult = 0.9
+					speed_mult = 0.9
+					reach_add = 1.5
+					knockback_mult = 1.1
+		PartType.MOD:
+			match mod_type:
+				ModType.WEIGHT:
+					damage_mult = 1.2
+					speed_mult = 0.8
+					reach_add = 0.0
+					knockback_mult = 1.4
+				ModType.SPIKES:
+					damage_mult = 1.1
+					speed_mult = 1.0
+					reach_add = 0.3
+					knockback_mult = 1.2
 
 func _update_visual():
 	# Simple color coding for different part types

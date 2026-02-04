@@ -10,8 +10,8 @@ size = Vector3(4, 2, 4)
 
 [node name="Workbench" type="Area3D"]
 script = ExtResource("1_workbench")
-collision_layer = 2
-collision_mask = 1
+collision_layer = 8
+collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_1x8yv")

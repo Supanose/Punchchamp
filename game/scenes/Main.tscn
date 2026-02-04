@@ -1,20 +1,23 @@
-[gd_scene load_steps=12 format=3 uid="uid://main_scene"]
+[gd_scene format=3 uid="uid://c7r1xqly7qvje"]
 
-[ext_resource type="PackedScene" uid="uid://player_scene" path="res://scenes/Player.tscn" id="1_player"]
-[ext_resource type="Script" path="res://scripts/GameMode.gd" id="2_gamemode"]
-[ext_resource type="PackedScene" uid="uid://part_pickup" path="res://scenes/pickups/PartPickup.tscn" id="3_part_pickup"]
+[ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player"]
+[ext_resource type="Script" uid="uid://b8ihlqyriasdy" path="res://scripts/GameMode.gd" id="2_gamemode"]
+[ext_resource type="PackedScene" path="res://scenes/pickups/PartPickup.tscn" id="3_part_pickup"]
 [ext_resource type="PackedScene" uid="uid://workbench" path="res://scenes/Workbench.tscn" id="4_workbench"]
+[ext_resource type="PackedScene" path="res://scenes/TrainingDummy.tscn" id="5_training_dummy"]
+[ext_resource type="PackedScene" path="res://scenes/AIOpponent.tscn" id="6_ai_opponent"]
+[ext_resource type="PackedScene" path="res://scenes/AIConfigMenu.tscn" id="7_ai_config_menu"]
+[ext_resource type="PackedScene" path="res://scenes/ResultsScreen.tscn" id="8_results_screen"]
 
 [sub_resource type="Environment" id="Environment_1x8yv"]
 background_mode = 1
 background_color = Color(0.2, 0.3, 0.4, 1)
 ambient_light_color = Color(0.2, 0.2, 0.2, 1)
 
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_1x8yv"]
+
 [sub_resource type="PlaneMesh" id="PlaneMesh_1x8yv"]
 size = Vector2(100, 100)
-
-[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_1x8yv"]
-plane = Plane(0, 1, 0, 0)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1x8yv"]
 size = Vector3(20, 5, 1)
@@ -22,80 +25,84 @@ size = Vector3(20, 5, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_1x8yv"]
 size = Vector3(20, 5, 1)
 
-[node name="Main" type="Node3D"]
+[node name="Main" type="Node3D" unique_id=291505666]
 
-[node name="GameMode" type="Node" parent="."]
+[node name="GameMode" type="Node" parent="." unique_id=1457018920]
 script = ExtResource("2_gamemode")
+groups = ["gamemode"]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1816370965]
 environment = SubResource("Environment_1x8yv")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=2033295799]
 transform = Transform3D(0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, -0.75, 0.433013, 0, 10, 0)
-light_energy = 1.0
 shadow_enabled = true
 
-[node name="Player" parent="." instance=ExtResource("1_player")]
+[node name="Player" parent="." unique_id=1426193105 instance=ExtResource("1_player")]
 
-[node name="Ground" type="StaticBody3D" parent="."]
+[node name="Ground" type="StaticBody3D" parent="." unique_id=365085018]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=185340229]
 shape = SubResource("WorldBoundaryShape3D_1x8yv")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=934860007]
 transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0)
 mesh = SubResource("PlaneMesh_1x8yv")
 
-[node name="Barrier" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 10)
+[node name="Barrier" type="Node3D" parent="." unique_id=963902295]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 2.5, 10)
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Barrier"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Barrier" unique_id=2003949101]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Barrier/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Barrier/StaticBody3D" unique_id=2136566513]
 shape = SubResource("BoxShape3D_1x8yv")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Barrier"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Barrier" unique_id=347742165]
 mesh = SubResource("BoxMesh_1x8yv")
 
-[node name="Pickups" type="Node3D" parent="."]
+[node name="Pickups" type="Node3D" parent="." unique_id=1300763745]
 
-[node name="BladeCore1" parent="Pickups" instance=ExtResource("3_part_pickup")]
+[node name="BladeCore1" parent="Pickups" unique_id=204485995 instance=ExtResource("3_part_pickup")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -5)
-part_type = 0
-core_type = 0
 
-[node name="HammerCore1" parent="Pickups" instance=ExtResource("3_part_pickup")]
+[node name="HammerCore1" parent="Pickups" unique_id=1296317153 instance=ExtResource("3_part_pickup")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, -5)
-part_type = 0
 core_type = 1
 
-[node name="ShortHandle1" parent="Pickups" instance=ExtResource("3_part_pickup")]
+[node name="ShortHandle1" parent="Pickups" unique_id=2078808207 instance=ExtResource("3_part_pickup")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 1, -5)
 part_type = 1
-handle_type = 0
 
-[node name="LongHandle1" parent="Pickups" instance=ExtResource("3_part_pickup")]
+[node name="LongHandle1" parent="Pickups" unique_id=1167324172 instance=ExtResource("3_part_pickup")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 1, -5)
 part_type = 1
 handle_type = 1
 
-[node name="WeightMod1" parent="Pickups" instance=ExtResource("3_part_pickup")]
+[node name="WeightMod1" parent="Pickups" unique_id=40211614 instance=ExtResource("3_part_pickup")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -7)
 part_type = 2
-mod_type = 0
 
-[node name="SpikesMod1" parent="Pickups" instance=ExtResource("3_part_pickup")]
+[node name="SpikesMod1" parent="Pickups" unique_id=2055395510 instance=ExtResource("3_part_pickup")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, -7)
 part_type = 2
 mod_type = 1
 
-[node name="Workbench1" parent="." instance=ExtResource("4_workbench")]
+[node name="Workbench1" parent="." unique_id=1787110306 instance=ExtResource("4_workbench")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -8)
-add_to_group = "workbench"
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="TrainingDummy" parent="." unique_id=431348429 instance=ExtResource("5_training_dummy")]
 
-[node name="StateLabel" type="Label" parent="UI"]
+[node name="AIOpponent" parent="." unique_id=1234567890 instance=ExtResource("6_ai_opponent")]
+
+[node name="AIConfigMenu" parent="." unique_id=1234567891 instance=ExtResource("7_ai_config_menu")]
+
+[node name="ResultsScreen" parent="." unique_id=1234567892 instance=ExtResource("8_results_screen")]
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=861717210]
+
+[node name="StateLabel" type="Label" parent="UI" unique_id=1985029368]
 offset_left = 20.0
 offset_top = 20.0
 offset_right = 200.0
@@ -103,7 +110,7 @@ offset_bottom = 60.0
 text = "PREP"
 vertical_alignment = 1
 
-[node name="TimerLabel" type="Label" parent="UI"]
+[node name="TimerLabel" type="Label" parent="UI" unique_id=1104666408]
 offset_left = 20.0
 offset_top = 70.0
 offset_right = 200.0
@@ -111,7 +118,7 @@ offset_bottom = 110.0
 text = "PREP: 60"
 vertical_alignment = 1
 
-[node name="PartsLabel" type="Label" parent="UI"]
+[node name="PartsLabel" type="Label" parent="UI" unique_id=753107157]
 offset_left = 20.0
 offset_top = 120.0
 offset_right = 300.0
@@ -119,7 +126,7 @@ offset_bottom = 160.0
 text = "Parts: None"
 vertical_alignment = 1
 
-[node name="WeaponLabel" type="Label" parent="UI"]
+[node name="WeaponLabel" type="Label" parent="UI" unique_id=995301564]
 offset_left = 20.0
 offset_top = 170.0
 offset_right = 300.0
